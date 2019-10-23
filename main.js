@@ -38,12 +38,36 @@ if (fileExt === ".ini"){
     // parse .ini
     console.log(fileExt)
     console.log(ini(content))
+    file = makeFileName(filename)
+    // create a new .json file and write the content
+    fs.writeFile(file, JSON.stringify(ini(content)), function (err) {
+      if (err) throw err;
+      console.log(`Created ${file} and saved content!`);
+    });
 }
 else if (fileExt === ".env"){
     // parse .env
     console.log(fileExt)
-    //console.log(env(content))
-    for (elt of env(content)){
-        console.log(elt)
-    }
+    console.log(env(content))
+    file = makeFileName(filename)
+    // create a new .json file and write the content
+    fs.writeFile(file, JSON.stringify(env(content)), function (err) {
+      if (err) throw err;
+      console.log(`Created ${file} and saved content!`);
+    });
 }
+
+//******************custom functions*********************//
+  // filename with format name.YearMonthDayHourMinutesSeconds.json
+  function makeFileName(filename){
+    date = new Date()
+    year = date.getFullYear().toString()
+    month = date.getMonth()+1
+    month = month.toString()
+    day = date.getDate().toString()
+    hours = date.getHours().toString()
+    minutes = date.getMinutes().toString()
+    seconds = date.getSeconds().toString()
+    fileFormat = filename+'.'+year+month+day+hours+minutes+seconds+'.json'
+    return fileFormat
+  }
